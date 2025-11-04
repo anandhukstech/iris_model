@@ -1,13 +1,20 @@
+import streamlit as st
 import pickle
 import numpy as np
 
-# Load model
-with open("model.pkl", "rb") as f:
-    model = pickle.load(f)
+# Load trained model
+model = pickle.load(open("model.pkl", "rb"))
 
-# Example input
-sample = np.array([[5.1, 3.5, 1.4, 0.2]])
+st.title("🌸 Iris Flower Classifier (ML App)")
 
-# Predict
-prediction = model.predict(sample)
-print("Predicted class:", prediction)
+# User input
+sepal_length = st.number_input("Sepal Length", 0.0, 10.0, 5.1)
+sepal_width = st.number_input("Sepal Width", 0.0, 10.0, 3.5)
+petal_length = st.number_input("Petal Length", 0.0, 10.0, 1.4)
+petal_width = st.number_input("Petal Width", 0.0, 10.0, 0.2)
+
+if st.button("Predict"):
+    features = np.array([[sepal_length, sepal_width, petal_length, petal_width]])
+    prediction = model.predict(features)[0]
+    species = ["Setosa", "Versicolor", "Virginica"]
+    st.success(f"🌼 Predicted Species: {species[prediction]}")
